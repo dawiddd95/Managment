@@ -1,4 +1,4 @@
-package entity;
+package com.company.entity;
 
 public class Product {
     private Long id;
