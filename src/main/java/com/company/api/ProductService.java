@@ -1,4 +1,4 @@
 package com.company.api;
 
-public class ProductService {
+public interface ProductService {
 }
