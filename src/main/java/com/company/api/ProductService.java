@@ -10,4 +10,5 @@ public interface ProductService {
     Product getProductByName(String name);
     boolean checkIfExistByName(String name);
     boolean checkIfExistById(Long id);
+    boolean checkIfProductIsAvailable(String name);
 }

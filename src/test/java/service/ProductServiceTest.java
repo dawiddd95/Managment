@@ -101,4 +101,29 @@ public class ProductServiceTest {
 
         Assert.assertNotEquals(true, isExist);
     }
+
+    @Test
+    public void testProductIsAvailable() {
+        List<Product> products = new ArrayList<Product>();
+        products.add(new Product(1L, "Czekolada", 2.80F, 0.200F, "brown", 328));
+        products.add(new Product(2L, "Coca-Cola", 4.50F, 1.750F, "black", 218));
+
+        ProductServiceImpl productService = new ProductServiceImpl(products);
+
+        boolean isAvailable = productService.checkIfProductIsAvailable("Czekolada");
+
+        Assert.assertEquals(true, isAvailable);
+    }
+
+    @Test
+    public void testProductIsNotAvailable() {
+        List<Product> products = new ArrayList<Product>();
+        products.add(new Product(1L, "Czekolada", 2.80F, 0.200F, "brown", 0));
+
+        ProductServiceImpl productService = new ProductServiceImpl(products);
+
+        boolean isAvailable = productService.checkIfProductIsAvailable("Czekolada");
+
+        Assert.assertNotEquals(true, isAvailable);
+    }
 }
