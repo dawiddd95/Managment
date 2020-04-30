@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface ProductService {
     List<Product> getProducts();
-    Integer getAmountOfProducts();
-    Product getProductByName(String productName);
-    Boolean checkIfExistByName(String productName);
-    Boolean checkIfExistById(Long id);
+    int getAmountOfProducts();
+    Product getProductByName(String name);
+    boolean checkIfExistByName(String name);
+    boolean checkIfExistById(Long id);
 }
