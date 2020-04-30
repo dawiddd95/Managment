@@ -26,9 +26,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public Product getProductByName(String name) {
-        for(int i = 0; i < products.size(); i++) {
-            Product product = products.get(i);
-            if(product.getProductName() == name) {
+        for(Product product : products) {
+            if(product.getProductName().equals(name)) {
                 return product;
             }
         }
@@ -37,9 +36,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public boolean checkIfExistByName(String name) {
-        for(int i = 0; i < products.size(); i++) {
-            Product product = products.get(i);
-            if(product.getProductName() == name) {
+        for(Product product : products) {
+            if(product.getProductName().equals(name)) {
                 return true;
             }
         }
@@ -48,9 +46,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public boolean checkIfExistById(Long id) {
-        for(int i = 0; i < products.size(); i++) {
-            Product product = products.get(i);
-            if(product.getId() == id) {
+        for(Product product : products) {
+            if(product.getId().equals(id)) {
                 return true;
             }
         }
@@ -59,9 +56,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public boolean checkIfProductIsAvailable(String name) {
-        for(int i = 0; i < products.size(); i++) {
-            Product product = products.get(i);
-            if(product.getProductName() == name && product.getProductCount() > 0) {
+        for(Product product : products) {
+            if(product.getProductName().equals(name) && product.getProductCount() > 0) {
                 return true;
             }
         }
