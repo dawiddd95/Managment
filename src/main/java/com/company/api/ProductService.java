@@ -8,7 +8,7 @@ public interface ProductService {
     List<Product> getProducts();
     int getAmountOfProducts();
     Product getProductByName(String name);
-    boolean checkIfExistByName(String name);
-    boolean checkIfExistById(Long id);
-    boolean checkIfProductIsAvailable(String name);
+    boolean isProductExist(String name);
+    boolean isProductExist(Long id);
+    boolean isProductAvailable(String name);
 }

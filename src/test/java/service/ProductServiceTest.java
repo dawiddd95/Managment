@@ -1,5 +1,7 @@
 package service;
 
+import com.company.entity.Boots;
+import com.company.entity.Cloth;
 import com.company.entity.Product;
 import com.company.service.ProductServiceImpl;
 import org.junit.Assert;
@@ -11,10 +13,10 @@ import java.util.List;
 public class ProductServiceTest {
 
     @Test
-    public void testGetProducts() {
+    public void testGetProductsPositive() {
         List<Product> products = new ArrayList<Product>();
-        products.add(new Product(1L, "Czekolada", 2.80F, 0.200F, "brown", 328));
-        products.add(new Product(2L, "Coca-Cola", 4.50F, 1.750F, "black", 218));
+        products.add(new Cloth(1l, "T-SHIRT", 35.0f, 0.3f, "Black", 4, "XL", "COTTON"));
+        products.add(new Boots(1l, "T-SHIRT", 35.0f, 0.3f, "Black", 4, 38, true));
 
         ProductServiceImpl productService = new ProductServiceImpl(products);
 
@@ -26,12 +28,12 @@ public class ProductServiceTest {
     @Test
     public void testGetAmountsOfProducts() {
         List<Product> products = new ArrayList<Product>();
-        products.add(new Product(1L, "Czekolada", 2.80F, 0.200F, "brown", 328));
-        products.add(new Product(2L, "Coca-Cola", 4.50F, 1.750F, "black", 218));
+        products.add(new Cloth(1l, "T-SHIRT", 35.0f, 0.3f, "Black", 4, "XL", "COTTON"));
+        products.add(new Boots(2l, "Boots", 35.0f, 0.3f, "Black", 4, 38, true));
 
         ProductServiceImpl productService = new ProductServiceImpl(products);
 
-        int fetchedAmount = productService.getAmountOfProducts();
+        final int fetchedAmount = productService.getAmountOfProducts();
 
         Assert.assertEquals(2, fetchedAmount);
     }
@@ -58,7 +60,7 @@ public class ProductServiceTest {
 
         ProductServiceImpl productService = new ProductServiceImpl(products);
 
-        boolean isExist = productService.checkIfExistByName("Czekolada");
+        boolean isExist = productService.isProductExist("Czekolada");
 
         Assert.assertEquals(true, isExist);
     }
@@ -71,7 +73,7 @@ public class ProductServiceTest {
 
         ProductServiceImpl productService = new ProductServiceImpl(products);
 
-        boolean isExist = productService.checkIfExistByName("Kinder niespodzianka");
+        boolean isExist = productService.isProductExist("Kinder niespodzianka");
 
         Assert.assertNotEquals(true, isExist);
     }
@@ -84,7 +86,7 @@ public class ProductServiceTest {
 
         ProductServiceImpl productService = new ProductServiceImpl(products);
 
-        boolean isExist = productService.checkIfExistById(1L);
+        boolean isExist = productService.isProductExist(1L);
 
         Assert.assertEquals(true, isExist);
     }
@@ -97,7 +99,7 @@ public class ProductServiceTest {
 
         ProductServiceImpl productService = new ProductServiceImpl(products);
 
-        boolean isExist = productService.checkIfExistById(4L);
+        boolean isExist = productService.isProductExist(4L);
 
         Assert.assertNotEquals(true, isExist);
     }
@@ -110,7 +112,7 @@ public class ProductServiceTest {
 
         ProductServiceImpl productService = new ProductServiceImpl(products);
 
-        boolean isAvailable = productService.checkIfProductIsAvailable("Czekolada");
+        boolean isAvailable = productService.isProductAvailable("Czekolada");
 
         Assert.assertEquals(true, isAvailable);
     }
@@ -122,7 +124,7 @@ public class ProductServiceTest {
 
         ProductServiceImpl productService = new ProductServiceImpl(products);
 
-        boolean isAvailable = productService.checkIfProductIsAvailable("Czekolada");
+        boolean isAvailable = productService.isProductAvailable("Czekolada");
 
         Assert.assertNotEquals(true, isAvailable);
     }

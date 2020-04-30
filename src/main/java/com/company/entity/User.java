@@ -5,6 +5,8 @@ public class User {
     private String login;
     private String password;
 
+    public final static String USER_SEPARATOR = "#";
+
     public User(Long id, String login, String password) {
         this.id = id;
         this.login = login;
