@@ -57,4 +57,15 @@ public class ProductServiceImpl implements ProductService {
 
         return false;
     }
+
+    public boolean checkIfProductIsAvailable(String name) {
+        for(int i = 0; i < products.size(); i++) {
+            Product product = products.get(i);
+            if(product.getProductName() == name && product.getProductCount() > 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
