@@ -1,16 +1,16 @@
-package com.company.service;
+package com.company.facade;
 
 import com.company.api.ProductDao;
-import com.company.api.ProductService;
+import com.company.api.UserRegisterLoginFacade;
 import com.company.dao.ProductDaoImpl;
 import com.company.entity.Product;
+import com.company.service.ProductServiceImpl;
 import com.company.validator.ProductValidator;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class ProductServiceImpl implements ProductService {
+public class UserRegisterLoginFacadeImpl implements UserRegisterLoginFacade {
     private static ProductServiceImpl instance = null;
     private ProductDao productDao = ProductDaoImpl.getInstance();
     private ProductValidator productValidator = ProductValidator.getInstance();

@@ -10,17 +10,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDaoImpl implements ProductDao {
-    private final String fileName;
-    private final String productType;
+    private static final String fileName = "products.data";
+    private static ProductDao instance = null;
 
-    public ProductDaoImpl(String fileName, String productType) {
-        this.fileName=fileName;
-        this.productType=productType;
+    private ProductDaoImpl() {
         try {
             FileUtils.createNewFile(fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static ProductDao getInstance() {
+        if (instance == null) {
+            instance = new ProductDaoImpl();
+        }
+
+        return instance;
     }
 
 
@@ -71,43 +77,14 @@ public class ProductDaoImpl implements ProductDao {
 
         String readLine = bufferedReader.readLine();
         while(readLine != null) {
-            Product product = ProductParser.stringToProduct(readLine, productType);
+            Product product = ProductParser.stringToProduct(readLine);
             if (product != null) {
                 products.add(product);
             }
+            readLine = bufferedReader.readLine();
         }
         bufferedReader.close();
 
         return products;
-    }
-
-    public Product getProductById(Long productId) throws IOException {
-        List<Product> products = getAllProducts();
-
-        for (Product product : products
-        ) {
-            boolean isFoundProduct = product.getId().equals(productId);
-            if (isFoundProduct) {
-                return product;
-            }
-
-        }
-
-        return null;
-    }
-
-    public Product getProductByProductName(String productName) throws IOException {
-        List<Product> products = getAllProducts();
-
-        for (Product product : products
-        ) {
-            boolean isFoundProduct = product.getProductName().equals(productName);
-            if (isFoundProduct) {
-                return product;
-            }
-
-        }
-
-        return null;
     }
 }

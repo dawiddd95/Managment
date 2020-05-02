@@ -11,6 +11,8 @@ import java.util.List;
 
 public class UserDaoImpl implements UserDao {
 
+
+
     private static final String fileName = "users.data";
     private static UserDaoImpl instance = null;
 
@@ -81,39 +83,9 @@ public class UserDaoImpl implements UserDao {
         while(readLine != null) {
             User user = UserParser.stringToUser(readLine);
             users.add(user);
-
+            readLine = bufferedReader.readLine();
         }
 
         return users;
-    }
-
-    public User getUserById(Long userId) throws IOException {
-        List<User> users = getAllUsers();
-
-        for (User user : users
-        ) {
-            boolean isFoundUser = user.getId().equals(userId);
-            if (isFoundUser) {
-                return user;
-            }
-
-        }
-
-        return null;
-    }
-
-    public User getUserByLogin(String login) throws IOException {
-        List<User> users = getAllUsers();
-
-        for (User user : users
-        ) {
-            boolean isFoundUser = user.getLogin().equals(login);
-            if (isFoundUser) {
-                return user;
-            }
-
-        }
-
-        return null;
     }
 }
