@@ -76,5 +76,50 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
+    public void updateUser(User user) {
+        PreparedStatement statement;
+        try {
+            String query = "update " + tableName + " set login = ?, password = ? where id=?";
+            statement = connection.prepareStatement(query);
 
+            statement.setString(1, user.getLogin());
+            statement.setString(2, user.getPassword());
+            statement.setLong(3, user.getId());
+
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeUserById(Long userId) {
+        PreparedStatement statement;
+        try {
+            String query = "delete from " +tableName+ " where id=?";
+            statement = connection.prepareStatement(query);
+
+            statement.setLong(1, userId);
+
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeUserByLogin(String login) {
+        PreparedStatement statement;
+        try {
+            String query = "delete from " + tableName + " where login=?";
+            statement = connection.prepareStatement(query);
+
+            statement.setString(1, login);
+
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
