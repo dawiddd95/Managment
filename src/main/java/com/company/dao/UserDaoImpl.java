@@ -6,86 +6,75 @@ import com.company.entity.parser.UserParser;
 import com.company.utils.FileUtils;
 
 import java.io.*;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class UserDaoImpl implements UserDao {
+    private final static UserDao instance = new UserDaoImpl();
 
-
-
-    private static final String fileName = "users.data";
-    private static UserDaoImpl instance = null;
+    private Connection connection;
+    private final String databaseName = "people";
+    private final String tableName = "users";
+    private final String user = "postgres";
+    private final String password = "m2svs4";
 
     private UserDaoImpl() {
+        init();
+    }
+
+    public static UserDao getInstance() {
+        return UserDaoImpl.instance;
+    }
+
+    private void init() {
         try {
-            FileUtils.createNewFile(fileName);
-        } catch (IOException e) {
-            System.out.println("Error with file path");
-            // exit zamyka całą aplikację
-            System.exit(-1);
+            Class.forName("org.postgresql.Driver");
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost/"+databaseName+"?useSSL=false", user, password);
+        } catch(Exception e) {
+            e.printStackTrace();
         }
     }
 
-    public static UserDaoImpl getInstance() {
-        if (instance == null) {
-            instance = new UserDaoImpl();
-        }
+    public List<User> getAllUsers() {
+        List<User> users = new LinkedList<User>();
+        Statement statement = null;
 
-        return instance;
-    }
-
-    public void saveUser(User user) throws IOException {
-        List<User> users = getAllUsers();
-        users.add(user);
-        saveUsers(users);
-    }
-
-    public void saveUsers(List<User> users) throws FileNotFoundException {
-        PrintWriter printWriter = new PrintWriter(new FileOutputStream(fileName, true));
-        for(User user : users) {
-            printWriter.write(user.toString() + "\n");
-        }
-        printWriter.close();
-
-    }
-
-    public void removeUserById(Long userId) throws IOException {
-        List<User> users = getAllUsers();
-
-        for(int i=0;i<users.size(); i++) {
-            boolean isFoundUser = users.get(i).getId().equals(userId);
-            if (isFoundUser) {
-                users.remove(i);
+        try {
+            statement = connection.createStatement();
+            String query = "select * from " + tableName;
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                Long id = resultSet.getLong("id");
+                String login = resultSet.getString("login");
+                String password = resultSet.getString("password");
+                User user = new User(id, login, password);
+                users.add(user);
             }
-        }
-
-        saveUsers(users);
-    }
-
-    public void removeUserByLogin(String login) throws IOException {
-        List<User> users = getAllUsers();
-
-        for(int i=0;i<users.size(); i++) {
-            boolean isFoundUser = users.get(i).getLogin().equals(login);
-            if (isFoundUser) {
-                users.remove(i);
-            }
-        }
-
-        saveUsers(users);
-    }
-
-    public List<User> getAllUsers() throws IOException {
-        List<User> users = new ArrayList<User>();
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
-
-        String readLine = bufferedReader.readLine();
-        while(readLine != null) {
-            User user = UserParser.stringToUser(readLine);
-            users.add(user);
-            readLine = bufferedReader.readLine();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return users;
     }
+
+    public void saveUser(User user) {
+        PreparedStatement statement;
+        try {
+            String query = "insert into " + tableName + " (login, password) values(?, ?)";
+            statement = connection.prepareStatement(query);
+
+            statement.setString(1, user.getLogin());
+            statement.setString(2, user.getPassword());
+
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
